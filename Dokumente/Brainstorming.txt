@@ -6,5 +6,8 @@
 - C3PO bot
 - Notizapp, Foto erkennung, Handy als touchpad, (Schulguide) <3 <3
 - Automatische Rezept suche
-- 
+- Programmier Nachilfe Platform
+- HTL Donaustadt App
+- Welcher Lehrere wo ist 
+- App auf der sich Schulen vorstellen können 
 
