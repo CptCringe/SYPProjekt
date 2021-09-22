@@ -5,9 +5,10 @@
 - Discord Bot (Fortgeschritten mit KI, Webinterface) <3
 - C3PO bot
 - Notizapp, Foto erkennung, Handy als touchpad, (Schulguide) <3 <3
-- Automatische Rezept suche
+- Automatische Rezept suche, rechnungen, 
 - Programmier Nachilfe Platform
 - HTL Donaustadt App
 - Welcher Lehrere wo ist 
 - App auf der sich Schulen vorstellen können 
+- 
 
