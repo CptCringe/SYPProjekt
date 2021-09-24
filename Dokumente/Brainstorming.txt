@@ -1,14 +1,9 @@
-- Spiel
-- Real life battle royale
 - Formel sammlung
 - Online vokabelheft, spiel, duell <3
 - Discord Bot (Fortgeschritten mit KI, Webinterface) <3
-- C3PO bot
 - Notizapp, Foto erkennung, Handy als touchpad, (Schulguide) <3 <3
-- Automatische Rezept suche, rechnungen, 
-- Programmier Nachilfe Platform
-- HTL Donaustadt App
-- Welcher Lehrere wo ist 
-- App auf der sich Schulen vorstellen können 
-- 
+- Automatische Rezept suche
+- HTL Donaustadt App 
+- App/Website auf der sich Schulen vorstellen können 
+
 
