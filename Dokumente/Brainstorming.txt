@@ -1,9 +1,5 @@
-- Formel sammlung
+
 - Online vokabelheft, spiel, duell <3
 - Discord Bot (Fortgeschritten mit KI, Webinterface) <3
 - Notizapp, Foto erkennung, Handy als touchpad, (Schulguide) <3 <3
-- Automatische Rezept suche
-- HTL Donaustadt App 
-- App/Website auf der sich Schulen vorstellen können 
-
 
