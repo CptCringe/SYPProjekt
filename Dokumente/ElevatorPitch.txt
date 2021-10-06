@@ -1,0 +1,2 @@
+Um das langweilige beziehungsweise eintönige Vokabel lernen zu verbessern wollen wir ein Spiel entwickeln 
+bei dem man sich gegenseitig auf spielerische art untereinander abfragen kann.
