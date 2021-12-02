@@ -30,7 +30,7 @@ export default defineComponent({
   }
 
     
-    return { data,loadData,  isPwd: ref(true), email: ref('')};
+    return { data,loadData};
   }
 });
 </script>
