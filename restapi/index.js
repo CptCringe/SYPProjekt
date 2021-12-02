@@ -22,10 +22,9 @@ db.all(sql, [], (err, rows) => {
 })
 
 app.get('/listUsers', function (req, res) {
-    fs.readFile( __dirname + "/" + "users.json", 'utf8', function (err, data) {
-        console.log( data );
-        res.end( data );
-    });
+
+        res.end( 'Hello World' );
+    
 })
 
 var server = app.listen(8081, function () {
