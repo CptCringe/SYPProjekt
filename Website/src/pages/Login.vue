@@ -18,6 +18,10 @@
           <q-btn style="margin:auto; width:40%; left:30%" @click="login" type="submit" align="around" icon="login">Login</q-btn>
         </div>  
 
+        <div style="padding-top: 3%">
+          <q-btn style="margin:auto; width:30%; left:35%" @click="signUp" type="submit" align="around" >Sign Up</q-btn>
+        </div>  
+
       </q-card>
     </div>
   </q-page>
@@ -25,18 +29,24 @@
 
 <script lang="ts">
 
-
 import { defineComponent, ref } from 'vue';
-import { api } from 'boot/axios'
+import { api } from 'boot/axios';
+import router from '../router/index';
 
 export default defineComponent({
   name: 'PageLogin',
-  
+  email: ref(''),
+
   setup() {
 
     const data = ref()
 
+    function signUp () {
+        const fabian = 0;
+    }
+    
     function login () {
+      
       api.post('/login')
         .then((response) => {
           data.value = response.data as string
@@ -48,7 +58,7 @@ export default defineComponent({
     }
 
     
-    return { data,login,  isPwd: ref(true), email: ref('')};
+    return { data,login,signUp,  isPwd: ref(true), email: ref(''),password: ref('')};
   }
 });
 </script>
