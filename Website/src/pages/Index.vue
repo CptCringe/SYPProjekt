@@ -1,6 +1,6 @@
 <template>
   <q-page class="items-center">
-    
+
     <q-btn @click="loadData" type="submit" icon="shopping_cart">TEST API</q-btn>
   </q-page>
 </template>
@@ -13,13 +13,15 @@ import { api } from 'boot/axios'
 
 export default defineComponent({
   name: 'PageIndex',
+
   
+
   setup() {
 
     const data = ref()
 
     function loadData () {
-    api.get('/listUsers')
+    api.get('/testApi')
       .then((response) => {
         data.value = response.data as string
         console.log(data.value)
@@ -29,7 +31,7 @@ export default defineComponent({
       })
   }
 
-    
+
     return { data,loadData};
   }
 });

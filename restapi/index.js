@@ -21,10 +21,10 @@ db.all(sql, [], (err, rows) => {
     });
 })
 
-app.get('/listUsers', function (req, res) {
+app.get('/testApi', function (req, res) {
 
         res.end( 'Hello World' );
-    
+
 })
 
 var server = app.listen(8081, function () {

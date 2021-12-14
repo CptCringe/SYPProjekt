@@ -1,10 +1,9 @@
 <template>
-  <q-page class="items-center">
     <div style="padding-top: 15%">
       <q-card style="width: 20%; margin:auto; padding-bottom: 2%; padding-top: 2%;">
-        
+
         <q-input style="width: 80%; margin:auto" v-model="email" filled type="email" hint="Email"/>
-        
+
         <q-input style="width: 80%; margin:auto; padding-top: 1%" v-model="password" filled :type="isPwd ? 'password' : 'text'" hint="Password with toggle">
             <template v-slot:append>
               <q-icon
@@ -16,15 +15,14 @@
           </q-input>
         <div style="padding-top: 3%">
           <q-btn style="margin:auto; width:40%; left:30%" @click="login" type="submit" align="around" icon="login">Login</q-btn>
-        </div>  
+        </div>
 
         <div style="padding-top: 3%">
           <q-btn style="margin:auto; width:30%; left:35%" @click="signUp" type="submit" align="around" >Sign Up</q-btn>
-        </div>  
+        </div>
 
       </q-card>
     </div>
-  </q-page>
 </template>
 
 <script lang="ts">
@@ -44,9 +42,9 @@ export default defineComponent({
     function signUp () {
         const fabian = 0;
     }
-    
+
     function login () {
-      
+      window.location.href='#/'     // improooovvvvveeeeen
       api.post('/login')
         .then((response) => {
           data.value = response.data as string
@@ -57,7 +55,7 @@ export default defineComponent({
         })
     }
 
-    
+
     return { data,login,signUp,  isPwd: ref(true), email: ref(''),password: ref('')};
   }
 });
