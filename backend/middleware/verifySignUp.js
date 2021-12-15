@@ -41,16 +41,16 @@ checkDuplicateUsernameOrEmail = (req, res, next) => {
 
     db.all(sql,[username],(err, rows ) => {
         //if(err) res.send({message: err.message});
-        if(rows.count > 0) res.status(400).send({message: "Failed! Username already exists = " + req.body.username});
-        return;
+        if(rows.length > 0) res.status(400).send({message: "Failed! Username already exists = " + req.body.username});
+
     });
     // Email
     let email = req.body.email;
     let sql2 = 'select * from Users where username =  ?';
 
     db.all(sql2,[email],(err, rows ) => {
-        if(rows.count > 0) res.status(400).send({message: "Failed! Email already exists = " + req.body.email});
-        return;
+        if(rows.length > 0) res.status(400).send({message: "Failed! Email already exists = " + req.body.email});
+
     });
 
     next();
@@ -75,7 +75,7 @@ checkRolesExisted = (req, res, next) => {
             let sql = 'select * from Roles where id = ?';
             let roleId = i;
             db.all(sql,[roleId],(err, rows ) => {
-                if(rows.count === 0) res.status(400).send({message: "Failed! Role does not exist = " + req.body.roles[i]});
+                if(rows.length === 0) res.status(400).send({message: "Failed! Role does not exist = " + req.body.roles[i]});
                 return;
             });
 
