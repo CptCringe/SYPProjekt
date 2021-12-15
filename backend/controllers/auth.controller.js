@@ -11,7 +11,8 @@ let db = new sqlite3.Database('../DB/VocaBattleDB.db',sqlite3.OPEN_READWRITE);
 
 exports.signup = (req, res) => {
     // Save User to Database
-    let sql = 'INSERT into Users(username,hashPassw,email) values (\'?\',\'?\',\'?\')'
+
+    let sql = 'INSERT into Users(username,hashPassw,email) values (?,?,?)'
     db.run(sql, [req.body.username, req.body.password, req.body.email], function(err){
        if(err){
            res.status(500).send({ message: err.message });
@@ -21,8 +22,8 @@ exports.signup = (req, res) => {
 
     });
 
-    let sql2 = 'select UserID from Users where username == \'?\''
-    db.get(sql, [req.body.username], (err,row) =>{
+    let sql2 = 'select UserID from Users where username == ?'
+    db.get(sql2, [req.body.username], (err,row) =>{
         if (err) {
             res.status(500).send({ message: err.message });
             return;

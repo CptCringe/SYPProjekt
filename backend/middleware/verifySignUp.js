@@ -37,18 +37,19 @@ checkDuplicateUsernameOrEmail = (req, res, next) => {
     // Username
     let username = req.body.username;
 
-    let sql = 'select * from Users where username = \'?\'';
+    let sql = 'select * from Users where username = ?';
 
     db.all(sql,[username],(err, rows ) => {
-        if(rows.count === 0) res.status(400).send({message: "Failed! Role does not exist = " + req.body.username});
+        //if(err) res.send({message: err.message});
+        if(rows.count > 0) res.status(400).send({message: "Failed! Username already exists = " + req.body.username});
         return;
     });
     // Email
     let email = req.body.email;
-    let sql2 = 'select * from Users where username =  \'?\'';
+    let sql2 = 'select * from Users where username =  ?';
 
     db.all(sql2,[email],(err, rows ) => {
-        if(rows.count === 0) res.status(400).send({message: "Failed! Role does not exist = " + req.body.email});
+        if(rows.count > 0) res.status(400).send({message: "Failed! Email already exists = " + req.body.email});
         return;
     });
 
