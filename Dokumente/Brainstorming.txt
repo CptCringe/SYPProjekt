@@ -1,5 +1,0 @@
-
-- Online vokabelheft, spiel, duell <3
-- Discord Bot (Fortgeschritten mit KI, Webinterface) <3
-- Notizapp, Foto erkennung, Handy als touchpad, (Schulguide) <3 <3
-
