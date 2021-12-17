@@ -25,7 +25,7 @@
 </template>
 
 <script>
-export default {
+export default {           // TODO auflisten der Roles fixen
   name: 'Profile',
   computed: {
     currentUser() {
