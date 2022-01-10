@@ -8,6 +8,8 @@ let db = new sqlite3.Database('../DB/VocaBattleDB.db',sqlite3.OPEN_READWRITE);
 
 
 // TODO auf sqlite3 umbauen
+// TODO email verification
+// nodemailer + link mit token
 
 exports.signup = (req, res) => {
     // Save User to Database
