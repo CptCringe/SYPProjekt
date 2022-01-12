@@ -61,14 +61,14 @@ export default {
     },
     showAdminBoard() {
       if (this.currentUser && this.currentUser['roles']) {
-        return this.currentUser['roles'].includes('ROLE_ADMIN');
+        return this.currentUser['roles'].includes('admin');
       }
 
       return false;
     },
     showModeratorBoard() {
       if (this.currentUser && this.currentUser['roles']) {
-        return this.currentUser['roles'].includes('ROLE_MODERATOR');
+        return this.currentUser['roles'].includes('moderator');
       }
 
       return false;
