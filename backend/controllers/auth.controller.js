@@ -93,6 +93,7 @@ exports.signin = (req, res) => {
 
     const sql = "select * from Users where username == ?"
     db.get(sql, [username], (err, row) =>{
+        if(row == null) res.status(404).send({message: 'User not found'});
         if (err) {
             res.status(500).send({ message: err.message });
             return;
@@ -120,7 +121,7 @@ exports.signin = (req, res) => {
             }
 
             rows.forEach((row) =>{
-                authorities.push(row.name);
+                authorities.push(row.Name);
             })
             res.status(200).send({
                                  id: userId,
