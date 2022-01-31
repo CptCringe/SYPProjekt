@@ -8,22 +8,17 @@ let db = new sqlite3.Database('../DB/VocaBattleDB.db',sqlite3.OPEN_READWRITE);
 
 
 // TODO auf sqlite3 umbauen
-// TODO email verification
-// nodemailer + link mit token
+// TODO Freunde auflisten und adden
 
 exports.signup = (req, res) => {
     // Save User to Database
-
     let sql = 'INSERT into Users(username,hashPassw,email) values (?,?,?)'
     db.run(sql, [req.body.username, bcrypt.hashSync(req.body.password,10), req.body.email], function(err){
        if(err){
            res.status(500).send({ message: err.message });
            return
        }
-
-
     });
-
     let sql2 = 'select UserID from Users where username == ?'
     db.get(sql2, [req.body.username], (err,row) =>{
         if (err) {
@@ -40,9 +35,7 @@ exports.signup = (req, res) => {
 
             res.send({ message: "User was registered successfully!" });
         })
-
     })
-
 };
 
 exports.signin = (req, res) => {
@@ -132,10 +125,6 @@ exports.signin = (req, res) => {
                                  roles: authorities,
                                  accessToken: token
                              });
-
         });
-
-
     })
-
 };
