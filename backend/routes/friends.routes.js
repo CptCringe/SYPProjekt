@@ -1,4 +1,5 @@
 const controller = require('../controllers/friends.controller')
+const friendUrl = '/api/friends';
 
 module.exports = function (app){
     app.use(function(req, res, next) {
@@ -8,7 +9,7 @@ module.exports = function (app){
         );
         next();
     });
-    app.get("/api/friends", controller.getFriends);
-    //app.push()
+    app.get(friendUrl, controller.getFriends);
+    app.post(friendUrl, controller.addFriend);
     //app.delete()
 }
