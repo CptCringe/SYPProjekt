@@ -40,6 +40,12 @@
           </router-link>
         </li>
         <li class="nav-item">
+          <router-link to="/friends" class="nav-link">
+            <font-awesome-icon icon="user-friends" />
+            Friends
+          </router-link>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" @click.prevent="logOut">
             <font-awesome-icon icon="sign-out-alt" /> LogOut
           </a>
