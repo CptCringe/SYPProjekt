@@ -11,5 +11,5 @@ module.exports = function (app){
     });
     app.get(friendUrl, controller.getFriends);
     app.post(friendUrl, controller.addFriend);
-    //app.delete()
+    app.delete(friendUrl, controller.removeFriends);
 }
