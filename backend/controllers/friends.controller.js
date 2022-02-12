@@ -3,7 +3,7 @@ const sqllite3 = require('sqlite3');
 let db = new sqllite3.Database('../DB/VocaBattleDB.db', sqllite3.OPEN);
 
 exports.getFriends = (req, res) => {
-    const userId = req.body.userId;
+    const userId = req.query.userId;
     let sql = 'select friend from Friends where user == ?';
     let sql2 = 'select username from Users where UserID == ?'
     db.all(sql, [userId], (err, rows) => {

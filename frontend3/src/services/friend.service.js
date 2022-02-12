@@ -6,10 +6,10 @@ const API_URL = 'http://localhost:8081/api/';
 class FriendService {
     getFriends(user) {
         return axios
-            .get(API_URL + 'friends', {
+            .get(API_URL + 'friends', {params: {
                 userId: user.id,
                  //TODO: Testen
-            })
+            }})
             .then(response => {
 
                 return response.data;
