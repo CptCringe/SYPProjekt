@@ -11,7 +11,7 @@ class FriendService {
                  //TODO: Testen
             }})
             .then(response => {
-
+                localStorage.setItem('friends', JSON.stringify(response.data));
                 return response.data;
             });
     }

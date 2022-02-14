@@ -3,8 +3,8 @@
     <button @click="addFriend">Add</button>
     <button @click="removeFriend">Remove</button>
     <transition-group name="list" tag="ul">
-      <li v-for="item in getFriends.username" :key="item" class="list-item">
-        Item: {{ item }}
+      <li v-for="item in currFriends" :key="item" class="list-item">
+        {{ item.username }}
       </li>
     </transition-group>
   </div>
@@ -18,11 +18,13 @@ export default {
     currentUser() {
       return this.$store.state.auth.user;
     },
-
+    currFriends(){
+      return JSON.parse(localStorage.getItem('friends'));
+    }
   },
-  beforeMount() {
-    this.getFriends();
-  },
+  // beforeMount() {
+  //   this.getFriends();
+  // },
   methods: {
     addFriend(){
 
@@ -30,17 +32,6 @@ export default {
     removeFriend(){
 
     },
-    getFriends(){
-      // Holen der Freunde des current users
-      this.$store.dispatch("friend/getFriends", this.currentUser).then(
-          (response, error) => {
-            if(error) console.log(error);
-
-            return response;
-          }
-
-      );
-    }
   }
 }
 </script>

@@ -5,7 +5,7 @@ let db = new sqllite3.Database('../DB/VocaBattleDB.db', sqllite3.OPEN);
 exports.getFriends = async (req, res) => {
     const userId = req.query.userId;
     let sql = 'select friend, users.username from Friends join Users on friend = users.userID where user == ?';
-    let sql2 = 'select username from Users where UserID == ?'
+    
     let data = await getAllFriends(userId, sql,sql2,res);
     console.log(data);
     res.status(200).send(JSON.stringify(data));
