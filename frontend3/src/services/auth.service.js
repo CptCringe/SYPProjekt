@@ -1,6 +1,6 @@
 import axios from 'axios';
 //import bcrypt from 'bcryptjs'
-
+import friendService from './friend.service';
 const API_URL = 'http://localhost:8081/api/auth/';
 
 class AuthService {
@@ -13,6 +13,7 @@ class AuthService {
             .then(response => {
                 if (response.data.accessToken) {
                     localStorage.setItem('user', JSON.stringify(response.data));
+                    friendService.getFriends(JSON.parse(localStorage.getItem('user')));
                 }
                 console.log(JSON.stringify(response.data))
                 return response.data;
@@ -21,6 +22,7 @@ class AuthService {
 
     logout() {
         localStorage.removeItem('user');
+        localStorage.removeItem('friends');
     }
 
     register(user) {

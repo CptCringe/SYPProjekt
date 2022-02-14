@@ -2,32 +2,37 @@
 const sqllite3 = require('sqlite3');
 let db = new sqllite3.Database('../DB/VocaBattleDB.db', sqllite3.OPEN);
 
-exports.getFriends = (req, res) => {
+exports.getFriends = async (req, res) => {
     const userId = req.query.userId;
-    let sql = 'select friend from Friends where user == ?';
-    let sql2 = 'select username from Users where UserID == ?'
-    db.all(sql, [userId], (err, rows) => {
-       if(err){
-           res.status(500).send({message: err.message});
-           return;
-       }
-       let allfriends = [];
-       let username;
-       rows.forEach((r) =>
-       {
-           db.get(sql2, r, (error, row) =>
-           {
-               if(error){
-                   res.status(500).send({message: error.message});
-                   return;
-               }
-               username = row.username;
-           });
-           allfriends.push({userId: r.userId, username: username});
-       });
-       res.status(200).send(allfriends);
-    });
+    let sql = 'select friend, users.username from Friends join Users on friend = users.userID where user == ?';
+    
+    let data = await getAllFriends(userId, sql,sql2,res);
+    console.log(data);
+    res.status(200).send(JSON.stringify(data));
 }
+
+function getAllFriends(userId, sql, sql2, res){
+
+    return new Promise(async (resolve,reject)=>{
+        db.all(sql, [userId], (err, rows) => {
+            if(err){
+                res.status(500).send({message: err.message});
+            }
+            let allfriends = [];
+            let username;
+            console.log(rows);
+
+            rows.forEach((r) =>
+            {
+
+                allfriends.push({userId: r.friend, username: r.username});
+            });
+            resolve(allfriends);
+
+        });
+    })
+}
+
 
 exports.addFriend = (req, res) => {
     const UserId = req.body.userId;
