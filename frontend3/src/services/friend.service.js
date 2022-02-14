@@ -15,8 +15,15 @@ class FriendService {
                 return response.data;
             });
     }
+    addFriend(user, id){
+        return axios
+            .post(API_URL + 'friends/add', {userId: user.id, friendId: id}).then(response => { console.log(response.data)});
+    }
 
-
+    removeFriend(user, id){
+        return axios
+            .delete(API_URL + 'friends/remove', {params: {userId: user.id, friendId: id}}).then(response => { console.log(response.data)});
+    }
 }
 
 export default new FriendService();

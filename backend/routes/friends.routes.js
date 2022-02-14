@@ -10,6 +10,6 @@ module.exports = function (app){
         next();
     });
     app.get(friendUrl, controller.getFriends);
-    app.post(friendUrl, controller.addFriend);
-    app.delete(friendUrl, controller.removeFriends);
+    app.post(friendUrl + '/add', controller.addFriend);
+    app.delete(friendUrl + '/remove', controller.removeFriends);
 }
