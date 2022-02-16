@@ -1,5 +1,5 @@
 const controller = require('../controllers/voclists.controller');
-const voclistsUrl = 'api/voclists';
+const voclistsUrl = '/api/voclists';
 
 module.exports = function (app){
     app.use(function(req, res, next) {
@@ -9,5 +9,5 @@ module.exports = function (app){
         );
         next();
     });
-    app.get(voclistsUrl, controller.getLists)
+    app.get(voclistsUrl, controller.getListSignatures)
 }

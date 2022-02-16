@@ -6,13 +6,16 @@ const API_URL = 'http://localhost:8081/api/';
 class ListService {
     getLists(user) {
         return axios
-            .get(API_URL + '', {params: {
+            .get(API_URL + 'voclists', {params: {
                     userId: user.id,
                     //TODO: Testen
                 }})
             .then(response => {
                 localStorage.setItem('lists', JSON.stringify(response.data));
                 return response.data;
+            })
+            .catch(err => {
+                console.log(err)
             });
     }
     getList(id){
