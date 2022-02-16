@@ -17,6 +17,7 @@ function getAllFriends(userId, sql, res){
         db.all(sql, [userId], (err, rows) => {
             if(err){
                 res.status(500).send({message: err.message});
+                reject(err);
             }
             let allfriends = [];
             let username;

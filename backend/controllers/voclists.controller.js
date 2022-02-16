@@ -15,7 +15,11 @@ function getListSignaturesHelper(userId, sql, res){
     {
         db.all(sql, [userId], (err,rows)=>
         {
-            if(err) {res.status(500).send({message: err.message}); reject(err);};
+            if(err)
+            {
+                res.status(500).send({message: err.message});
+                reject(err);
+            }
 
             let allLists = [];
             //console.log(rows);
