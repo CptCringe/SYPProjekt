@@ -15,15 +15,16 @@ function getListSignaturesHelper(userId, sql, res){
     {
         db.all(sql, [userId], (err,rows)=>
         {
-           res.status(500).send({message: err.message});
-           return;
+            if(err) {res.status(500).send({message: err.message}); reject(err);};
+
+            let allLists = [];
+            //console.log(rows);
+            rows.forEach((r) => {
+                allLists.push({listId: r.Id, listName: r.Name})
+            });
+            resolve(allLists);
         });
-        let allLists = [];
-        //console.log(rows);
-        rows.forEach((r) => {
-           allLists.push({listId: r.Id, listName: r.Name})
-        });
-        resolve(allLists);
+
     });
 }
 
