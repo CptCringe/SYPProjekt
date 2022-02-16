@@ -24,7 +24,6 @@ function getAllFriends(userId, sql, res){
 
             rows.forEach((r) =>
             {
-
                 allfriends.push({userId: r.friend, username: r.username});
             });
             resolve(allfriends);
@@ -32,7 +31,6 @@ function getAllFriends(userId, sql, res){
         });
     })
 }
-
 
 exports.addFriend = (req, res) => {
     const UserId = req.body.userId;
