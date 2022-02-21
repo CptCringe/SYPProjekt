@@ -3,7 +3,7 @@
     <h3>Vokabellisten</h3>
     <transition-group name="table" tag="ul">
       <table v-for="item in getLists" :key="item" class="table-striped">
-        {{item.listId}}: {{item.listName}}
+        <router-link :to="{name: 'list', params: {id: item.listId}}" class="nav-item">{{item.listId}}: {{item.listName}}</router-link>
       </table>
     </transition-group>
   </div>

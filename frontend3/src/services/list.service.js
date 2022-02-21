@@ -18,9 +18,14 @@ class ListService {
                 console.log(err)
             });
     }
-    getList(id){
+    getList(id, cb){
         return axios
-            .get(API_URL + '', {params: {listId: id}}).then(response => { console.log(response.data); return response.data;});
+            .get(API_URL + '', {params: {listId: id}})
+            .then(response => { console.log(response.data); cb(null, response.data);})
+            .catch(err => {
+                console.log(err);
+                cb(err, null);
+            });
     }
 
 }
