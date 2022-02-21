@@ -1,4 +1,5 @@
 const sqllite3 = require('sqlite3');
+const fs = require("fs");
 let db = new sqllite3.Database('../DB/VocaBattleDB.db', sqllite3.OPEN);
 
 exports.getListSignatures = async (req, res) =>
@@ -32,6 +33,47 @@ function getListSignaturesHelper(userId, sql, res){
     });
 }
 
-exports.getLists = (req,res) => {
-    //Listen mit Inhalt und allem drum und dran (schwerer)
+exports.getLists = async (req,res) => {
+
+    const listId = req.query.listId;
+    if(typeof req.query.listId == "undefined") {res.status(404).send("No List Params"); console.log("No Params")
+    }else{
+        let sql = 'select path from VocLists where Id == ?'
+        let data = await getListById(listId, sql, res);
+        res.status(200).send(JSON.stringify(data));
+    }
+}
+
+function getListById(id, sql, res){
+    return new Promise( async (resolve, reject) =>{
+        db.get(sql, [id], (err,row) => {
+            if(err)
+            {
+                res.status(500).send({message: err.message});
+                reject(err);
+            }
+
+            if(typeof row == "undefined"){
+                res.status(404).send("No Path found");
+                reject("No Path found");
+            }
+
+
+            let path = row.Path;
+
+            const result = [];
+            console.log(__dirname)
+            let file = fs.readFileSync(path, 'utf-8');
+            let filearr = file.split('\r\n');
+            for(let i =0; i < filearr.length -1; i+=1){
+                let line = filearr[i].split(';');
+                result.push({Deutsch: line[0], Englisch: line[1]});
+            }
+
+            console.log()
+            resolve(result);
+        })
+
+    })
+
 }

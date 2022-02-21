@@ -2,7 +2,18 @@
   <div>List Number: {{$route.params.id}}</div>
   <div v-if="loading" class="loading">Loading...</div>
   <div v-if="error" class="error">{{error}}</div>
-  <div v-if="data"><table  v-for="item in data" :key="item" class="table-striped"></table></div>
+  <div v-if="post">
+    <table   class="table-striped">
+      <tr>
+        <th>Deutsch</th>
+        <th>Englisch</th>
+      </tr>
+      <tr v-for="item in post" :key="item">
+        <td>{{item.Deutsch}}</td>
+        <td>{{item.Englisch}}</td>
+      </tr>
+    </table>
+  </div>
 </template>
 
 <script>
@@ -18,7 +29,7 @@ export default {
   data(){
     return{
       loading: false,
-      data: null,
+      post: null,
       error: null,
     }
   },
@@ -33,7 +44,7 @@ export default {
   },
   methods: {
     fetchData(){
-      this.error = this.data = null;
+      this.error = this.post = null;
       this.loading = true;
 
       ListService.getList(this.$route.params.id, (err, post) =>{
@@ -41,7 +52,8 @@ export default {
         if(err){
           this.error = err.toString();
          } else {
-          this.data = post;
+          this.post = post;
+          console.log(this.post);
         }
       });
     }

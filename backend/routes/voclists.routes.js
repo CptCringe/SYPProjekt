@@ -10,4 +10,5 @@ module.exports = function (app){
         next();
     });
     app.get(voclistsUrl, controller.getListSignatures)
+    app.get(voclistsUrl + '/getListById', controller.getLists)
 }
