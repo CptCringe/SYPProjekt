@@ -20,8 +20,8 @@ class UserService {
         return axios.get(API_URL + 'admin', { headers: authHeader() });
     }
 
-    edituser(user, newname, cb){
-        return axios.post('http://localhost:8080/api/useredit', null,{headers: authHeader(), params: {userId: user.userId, username: newname}})
+    edituser(userId, newname, cb){
+        return axios.post('http://localhost:8081/api/useredit', null,{headers: authHeader(), params: {userId: userId, username: newname}})
             .then( response =>{ cb(null, response);})
             .catch( err => {cb(err, null)});
     }
