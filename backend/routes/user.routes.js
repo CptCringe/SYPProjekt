@@ -30,5 +30,5 @@ module.exports = function(app) {
         controller.adminBoard
     );
 
-    app.update("/api/useredit",[authJwt.verifyToken],controller.edituser)
+    app.post("/api/useredit",[authJwt.verifyToken],controller.edituser)
 };
