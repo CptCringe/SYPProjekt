@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Chat</title>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        #nachricht-box{
+            width: 80%;
+            max-width:120px;
+        }
+        #nachricht-box div {
+            background-color: #CCC;
+            padding: 5px;
+        }
+
+        #nachricht-box div:nth-child(2n){
+            background-color: #FFF;
+        }
+
+        #send-container {
+            position: fixed;;
+            padding-bottom: 30px;
+            bottom: 0;
+            background-color: white;
+            max-width: 120px;
+            width: 80%;
+            diplay: flex;
+        }
+
+        #message-input{
+            flex-grow: 1;
+        }
+
+    </style>
+</head>
+<body>
+ <div id="nachricht-box"></div>
+ <form id ="send-container">
+     <input type ="text" id="message-input">
+     <button type = "submit" id="send-button">send</button>
+ </form>
+</body>
+</html>
