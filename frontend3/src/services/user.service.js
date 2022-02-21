@@ -19,6 +19,10 @@ class UserService {
     getAdminBoard() {
         return axios.get(API_URL + 'admin', { headers: authHeader() });
     }
+
+    edituser(user){
+        return axios.post('http://localhost:8080/api/useredit', null,{headers: authHeader(), params: {userId: user.userId}});
+    }
 }
 
 export default new UserService();

@@ -5,6 +5,7 @@ import Register from "../components/Register.vue";
 import Friends from "../components/Friends.vue";
 import Vocablists from "../components/Vocablist.vue";
 import ListView from "../components/ListView";
+import EditUser from "../components/EditUser";
 
 // lazy-loaded
 const Profile = () => import("../components/Profile.vue")
@@ -43,6 +44,11 @@ const routes = [
     path: "/list/:id",
     name: "list",
     component: ListView
+  },
+  {
+    path: "/editProfile",
+    name: "edit",
+    component: EditUser
   },
   {
     path: "/profile",

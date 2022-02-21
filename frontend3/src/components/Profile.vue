@@ -4,6 +4,7 @@
       <h3>
         <strong>{{currentUser.username}}</strong> Profile
       </h3>
+      <button class="btn-outline-"><router-link to="/editProfile" class="nav-link"><font-awesome-icon icon="user" /> Edit</router-link> </button>
     </header>
     <p>
       <strong>Token:</strong>
