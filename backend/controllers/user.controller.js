@@ -14,6 +14,18 @@ exports.moderatorBoard = (req, res) => {
     res.status(200).send("Moderator Content.");
 };
 
-exports.edituser = (req, res) => {
+//sollte funktionieren
+//ohne abhängigkeit der Freundes listen
+exports.edituser = (req, res) => {  //updatet nur den username
+    const userId = req.query.userid;
+    const username = req.query.username;
 
-};
+    let sql = 'UPDATE Users SET username == ? where UserID==?';
+    db.run(sql, [username, userId], (error) => {
+        if(error){
+            res.status(500).send({message: error.message});
+            return;
+        }
+        res.status(200).send('Username changed successfully.');
+    })
+}
