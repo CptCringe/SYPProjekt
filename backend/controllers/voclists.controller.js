@@ -70,10 +70,19 @@ function getListById(id, sql, res){
                 result.push({Deutsch: line[0], Englisch: line[1]});
             }
 
-            console.log()
             resolve(result);
         })
 
     })
+}
 
+exports.createList = (req, res) => {
+    //name, creator, isprivate, to/fromlanguage, path
+    const listname = req.query.listname;
+    const creator = req.query.creator;
+    const isPriv = req.query.isprivate;
+    const tolanguage = req.query.tolanguage;
+    const fromlanguage = req.query.fromlanguage;
+
+    let sql = 'INSERT INTO VocLists(Id,Name,Creator,Is_private,Path,ToLanguage,FromLanguage) VALUES ()'
 }
