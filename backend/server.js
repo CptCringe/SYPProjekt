@@ -5,10 +5,10 @@ var jsonParser = bodyParser.json()
 const app = express();
 
 var corsOptions = {
-    origin: "http://localhost:8080"
+    origin: "*"
 };
 
-app.use(cors());
+app.use(cors(corsOptions));
 
 // parse requests of content-type - application/json
 app.use(express.json());

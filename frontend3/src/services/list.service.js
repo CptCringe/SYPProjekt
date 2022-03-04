@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 
-const API_URL = 'http://35.192.175.7:8081/api/';
+const API_URL = 'http://localhost:8081/api/';
 
 class ListService {
     getLists(user) {
