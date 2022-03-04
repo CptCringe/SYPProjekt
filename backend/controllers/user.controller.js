@@ -1,3 +1,6 @@
+const sqlite3 = require("sqlite3");
+let db = new sqlite3.Database('../DB/VocaBattleDB.db',sqlite3.OPEN_READWRITE);
+
 exports.allAccess = (req, res) => {
     res.status(200).send("Public Content.");
 };
@@ -17,8 +20,9 @@ exports.moderatorBoard = (req, res) => {
 //sollte funktionieren
 //ohne abhängigkeit der Freundes listen
 exports.edituser = (req, res) => {  //updatet nur den username
-    const userId = req.query.userid;
-    const username = req.query.username;
+    const userId = req.query.userId;
+    let obj = JSON.parse(req.query.username);
+    const username = obj["newname"];
 
     let sql = 'UPDATE Users SET username == ? where UserID==?';
     db.run(sql, [username, userId], (error) => {
@@ -26,6 +30,6 @@ exports.edituser = (req, res) => {  //updatet nur den username
             res.status(500).send({message: error.message});
             return;
         }
-        res.status(200).send('Username changed successfully.');
+        res.status(200).send('Username changed successfully.'+username);
     })
 }
