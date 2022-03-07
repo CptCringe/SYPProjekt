@@ -44,6 +44,7 @@ exports.getLists = async (req,res) => {
     }
 }
 
+//Helper
 function getListById(id, sql, res){
     return new Promise( async (resolve, reject) =>{
         db.get(sql, [id], (err,row) => {
@@ -76,13 +77,45 @@ function getListById(id, sql, res){
     })
 }
 
-exports.createList = (req, res) => {
+exports.createList = async (req, res) => {
     //name, creator, isprivate, to/fromlanguage, path
     const listname = req.query.listname;
     const creator = req.query.creator;
     const isPriv = req.query.isprivate;
     const tolanguage = req.query.tolanguage;
     const fromlanguage = req.query.fromlanguage;
+    const path = `../Listen/${creator}_${listname}.vbl`;    //nur einmal raushüpfen (geht wahrscheinlich von server.js)
+    const wordlist = req.query.voclist;     //Vokabelliste [{tolanguage: string, fromlanguage: string}]
+    let sql = `INSERT INTO VocLists(Id,Name,Creator,Is_private,Path,ToLanguage,FromLanguage)
+                VALUES (${listname},${creator},${isPriv},${path},${tolanguage},${fromlanguage})`;   //list sollte autoincrement sein deshalb keine angabe
 
-    let sql = 'INSERT INTO VocLists(Id,Name,Creator,Is_private,Path,ToLanguage,FromLanguage) VALUES ()'
+    //braucht doch keine async weil keine get method
+    db.run(sql, (err) => {
+        if(err){
+            res.status(500).send({message: err.message});
+            return;
+        }
+        res.status(200).send('list created');
+    })
+    //file schreiben
+    writeVocFile(path, wordlist);
+}
+
+function writeVocFile(path, data){
+    try{
+        fs.writeFileSync(path, 'ToLanguage;FromLanguage\n');//file erstellung und überschrift
+        data.forEach((item) =>{
+            let line = `${item.tolanguage};${item.fromlanguage}\n`;
+            fs.appendFile(path, line, (error) =>{
+                if(error){
+                    console.error(error)
+                    return;
+                }
+            });
+        });
+        console.log('file created')
+    }
+    catch(err){
+        console.log(err);
+    }
 }

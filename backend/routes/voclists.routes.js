@@ -10,5 +10,6 @@ module.exports = function (app){
         next();
     });
     app.get(voclistsUrl, controller.getListSignatures)
-    app.get(voclistsUrl + '/getListById', controller.getLists)
+    app.get(voclistsUrl + '/getListById', controller.getLists)      //Listen + Listeninhalt
+    app.post(voclistsUrl, controller.createList)    //creating List
 }
