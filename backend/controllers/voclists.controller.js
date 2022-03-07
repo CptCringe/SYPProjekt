@@ -2,15 +2,23 @@ const sqllite3 = require('sqlite3');
 const fs = require("fs");
 let db = new sqllite3.Database('../DB/VocaBattleDB.db', sqllite3.OPEN);
 
+// is_private == 1 (privat) // is_private == 0 (öffentlich)
 exports.getListSignatures = async (req, res) =>
 {
     const userId = req.query.userId;
     let sql = 'select Id, Name from VocLists where Creator == ?';   //private lists
     let data = await getListSignaturesHelper(userId, sql, res);
-    //console.log(data);
     res.status(200).send(JSON.stringify(data));
 }
 
+exports.getPublicListSignatures = async (req, res) =>{
+    const accessId = 0;   //0 sind publiclists, so umgeformt das ich den Helper gleich reusen kann
+    let sql = 'select Id, Name from VocLists where Is_private == ?';
+    let data = await getListSignaturesHelper(accessId, sql, res);
+    res.status(200).send(JSON.stringify(data));
+}
+
+//Helper
 function getListSignaturesHelper(userId, sql, res){
     return new Promise(async (resolve, reject) =>
     {
@@ -21,9 +29,7 @@ function getListSignaturesHelper(userId, sql, res){
                 res.status(500).send({message: err.message});
                 reject(err);
             }
-
             let allLists = [];
-            //console.log(rows);
             rows.forEach((r) => {
                 allLists.push({listId: r.Id, listName: r.Name})
             });
@@ -33,8 +39,8 @@ function getListSignaturesHelper(userId, sql, res){
     });
 }
 
+//TODO: get List inhalte auch noch auf private anpassen
 exports.getLists = async (req,res) => {
-
     const listId = req.query.listId;
     if(typeof req.query.listId == "undefined") {res.status(404).send("No List Params"); console.log("No Params")
     }else{
@@ -59,9 +65,7 @@ function getListById(id, sql, res){
                 reject("No Path found");
             }
 
-
             let path = row.Path;
-
             const result = [];
             console.log(__dirname)
             let file = fs.readFileSync(path, 'utf-8');
@@ -70,7 +74,6 @@ function getListById(id, sql, res){
                 let line = filearr[i].split(';');
                 result.push({Deutsch: line[0], Englisch: line[1]});
             }
-
             resolve(result);
         })
 
@@ -87,9 +90,8 @@ exports.createList = async (req, res) => {
     const path = `../Listen/${creator}_${listname}.vbl`;    //nur einmal raushüpfen (geht wahrscheinlich von server.js)
     const wordlist = req.query.voclist;     //Vokabelliste [{tolanguage: string, fromlanguage: string}]
     let sql = `INSERT INTO VocLists(Id,Name,Creator,Is_private,Path,ToLanguage,FromLanguage)
-                VALUES (${listname},${creator},${isPriv},${path},${tolanguage},${fromlanguage})`;   //list sollte autoincrement sein deshalb keine angabe
+                VALUES (${listname},${creator},${isPriv},${path},${tolanguage},${fromlanguage})`;   //Id sollte autoincrement sein
 
-    //braucht doch keine async weil keine get method
     db.run(sql, (err) => {
         if(err){
             res.status(500).send({message: err.message});
@@ -101,9 +103,10 @@ exports.createList = async (req, res) => {
     writeVocFile(path, wordlist);
 }
 
+//Helper (nur um ein File zu createn!)
 function writeVocFile(path, data){
     try{
-        fs.writeFileSync(path, 'ToLanguage;FromLanguage\n');//file erstellung und überschrift
+        fs.writeFileSync(path, 'ToLanguage;FromLanguage\n');    //file erstellung und überschrift
         data.forEach((item) =>{
             let line = `${item.tolanguage};${item.fromlanguage}\n`;
             fs.appendFile(path, line, (error) =>{
