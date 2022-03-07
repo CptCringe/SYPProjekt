@@ -35,7 +35,7 @@ function getAllFriends(userId, sql, res){
 
 exports.addFriend = (req, res) => {
     const UserId = req.body.userId;
-    const FriendId = req.body.friendId;
+    const FriendId = parseInt(req.body.friendId["id"]);
     let sql = `INSERT INTO Friends(user, friend) VALUES (${UserId},${FriendId})`;
     let sql2 = `INSERT INTO Friends(user, friend) VALUES (${FriendId},${UserId})`;
     db.run(sql, (err) => {
@@ -56,8 +56,8 @@ exports.addFriend = (req, res) => {
 }
 
 exports.removeFriends = (req, res) => {
-    const UserId = req.body.userId;
-    const FriendId = req.body.friendId;
+    const UserId = parseInt(req.query.userId);
+    const FriendId = parseInt(JSON.parse(req.query.friendId)["id"]);
     let sql = 'DELETE FROM Friends WHERE user==? and friend==?';
     db.run(sql, [UserId, FriendId], (err) => {
         if(err){
