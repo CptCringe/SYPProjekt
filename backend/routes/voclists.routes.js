@@ -9,7 +9,7 @@ module.exports = function (app){
         );
         next();
     });
-    app.get(voclistsUrl + '/getAllPrivate', controller.getListSignatures)
+    app.get(voclistsUrl, controller.getListSignatures)	//StandardUrl -> getAllPrivate
     app.get(voclistsUrl + '/getAllPublic', controller.getPublicListSignatures)
     app.get(voclistsUrl + '/getListById', controller.getLists)      //Listen + Listeninhalt
     app.post(voclistsUrl, controller.createList)    //creating List
