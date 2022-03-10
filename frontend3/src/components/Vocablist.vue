@@ -10,6 +10,9 @@
         </router-link>
       </table>
     </transition-group>
+
+  </div>
+  <div id="public-list">
     <h3>Öffentliche Vokabellisten</h3>
     <div v-if="loading" class="loading">Loading...</div>
     <div v-if="error" class="error">{{ error }}</div>
@@ -89,6 +92,17 @@ export default {
     align-items: center;
     flex-direction: column;
   }
+
+  #public-list{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  #public-list div{
+    width:calc(100% - 200px);
+  }
   h3{
     display:flex;
     justify-content: space-between;
@@ -164,5 +178,32 @@ export default {
     background-color: #BBB;
   }
 
+  #public-list ul{
+    list-style: none;
+    margin:10px 0px !important;
+    width:100%;
+    padding:0;
+  }
+
+  #public-list ul table{
+    width:100%;
+    display:flex;
+    text-decoration: none !important;
+    justify-content: flex-start;
+    padding-left: 10px;
+    align-items: center;
+    height:40px;
+    background-color: transparent;
+    border-bottom: 1px solid #BBB;
+    transition: all .4s ease;
+  }
+
+  #public-list ul table a{
+    color: #202020 !important;
+  }
+
+  #public-list ul table:hover{
+    background-color: #BBB;
+  }
 
 </style>

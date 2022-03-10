@@ -63,7 +63,7 @@ class ListService {
 
     getPublicLists(cb) {
         return axios
-            .get(API_URL + 'getAllPublic')
+            .get(API_URL + 'voclists/getAllPublic')
             .then(response => {
                 console.log(response.data);
                 cb(null, response.data);

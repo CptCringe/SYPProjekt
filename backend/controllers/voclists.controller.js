@@ -69,8 +69,9 @@ function getListById(id, sql, res){
             const result = [];
             console.log(__dirname)
             let file = fs.readFileSync(path, 'utf-8');
-            let filearr = file.split('\r\n');
-            for(let i =0; i < filearr.length -1; i+=1){
+            let str = typeof(file);
+            let filearr = file.split(/\n/g);
+            for(let i =1; i < filearr.length -1; i+=1){
                 let line = filearr[i].split(';');
                 result.push({Deutsch: line[0], Englisch: line[1]});
             }
