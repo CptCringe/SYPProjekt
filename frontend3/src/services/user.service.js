@@ -1,7 +1,9 @@
 import axios from 'axios';
 import authHeader from './auth-header';
 
-const API_URL = 'http://vocabattle.ddns.net:8081/api/test/';
+//const API_URL = 'http://vocabattle.ddns.net:8081/api/test/';
+const API_URL = 'http://localhost:8081/api/test/';
+
 
 class UserService {
     getPublicContent() {
@@ -21,7 +23,7 @@ class UserService {
     }
 
     edituser(userId, newname, cb){
-        return axios.post('http://vocabattle.ddns.net:8081/api/useredit', null,{headers: authHeader(), params: {userId: userId, username: newname}})
+        return axios.post('http://localhost:8081/api/useredit', null,{headers: authHeader(), params: {userId: userId, username: newname}})
             .then( response =>{ cb(null, response);})
             .catch( err => {cb(err, null)});
     }

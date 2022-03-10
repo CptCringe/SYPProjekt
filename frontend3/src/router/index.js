@@ -6,6 +6,7 @@ import Friends from "../components/Friends.vue";
 import Vocablists from "../components/Vocablist.vue";
 import ListView from "../components/ListView";
 import EditUser from "../components/EditUser";
+import ListEditor from "../components/ListEditor";
 
 // lazy-loaded
 const Profile = () => import("../components/Profile.vue")
@@ -73,6 +74,11 @@ const routes = [
     name: "user",
     // lazy-loaded
     component: BoardUser,
+  },
+  {
+    path: "/listEditor",
+    name: "listEditor",
+    component: ListEditor,
   },
 ];
 

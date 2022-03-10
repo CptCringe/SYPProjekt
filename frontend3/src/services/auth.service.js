@@ -1,7 +1,9 @@
 import axios from 'axios';
 //import bcrypt from 'bcryptjs'
 import friendService from './friend.service';
-const API_URL = 'http://vocabattle.ddns.net:8081/api/auth/';
+//const API_URL = 'http://vocabattle.ddns.net:8081/api/auth/';
+const API_URL = 'http://localhost:8081/api/auth/';
+
 
 class AuthService {
     login(user) {

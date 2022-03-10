@@ -1,6 +1,8 @@
 <template>
   <div id="list-demo">
-    <h3>Private Vokabellisten <button>Create List <font-awesome-icon icon="edit"></font-awesome-icon></button></h3>
+    <h3>Private Vokabellisten <button><router-link to="/listEditor" class="nav-link">
+      Create List <font-awesome-icon icon="edit"></font-awesome-icon>
+    </router-link></button></h3>
     <transition-group name="table" tag="ul">
       <table v-for="item in getLists" :key="item" class="table-striped">
         <router-link :to="{name: 'list', params: {id: item.listId}}" class="nav-item">
@@ -108,11 +110,29 @@ export default {
     transition: all .4s ease;
   }
 
+  h3 button a{
+    border: 2px solid transparent;
+    border-radius: 4px;
+    background-color: #505050;
+    color:white;
+    padding: 5px 8px;
+    height:35px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    transition: all .4s ease;
+  }
+
+  h3 button a{
+    background-color: transparent;
+  }
+
   h3 button:hover{
     background-color: #202020;
   }
 
-  h3 button svg{
+  h3 button a svg{
     margin-left: 10px;
   }
 
@@ -143,4 +163,6 @@ export default {
   #list-demo ul table:hover{
     background-color: #BBB;
   }
+
+
 </style>
