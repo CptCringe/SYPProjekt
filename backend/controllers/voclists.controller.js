@@ -88,9 +88,10 @@ exports.createList = async (req, res) => {
     const tolanguage = req.query.tolanguage;
     const fromlanguage = req.query.fromlanguage;
     const path = `../Listen/${creator}_${listname}.vbl`;    //nur einmal raushüpfen (geht wahrscheinlich von server.js)
-    const wordlist = req.query.voclist;     //Vokabelliste [{tolanguage: string, fromlanguage: string}]
-    let sql = `INSERT INTO VocLists(Id,Name,Creator,Is_private,Path,ToLanguage,FromLanguage)
-                VALUES (${listname},${creator},${isPriv},${path},${tolanguage},${fromlanguage})`;   //Id sollte autoincrement sein
+    const wordlist = req.body.voclist;     //Vokabelliste [{tolanguage: string, fromlanguage: string}]
+
+    let sql = `INSERT INTO VocLists(Name,Creator,Is_private,Path,ToLanguage,FromLanguage)
+                VALUES ("${listname}","${creator}",${isPriv},"${path}","${tolanguage}","${fromlanguage}")`;   //list sollte autoincrement sein deshalb keine angabe
 
     db.run(sql, (err) => {
         if(err){
@@ -100,15 +101,14 @@ exports.createList = async (req, res) => {
         res.status(200).send('list created');
     })
     //file schreiben
-    writeVocFile(path, wordlist);
+    writeVocFile(path, wordlist,fromlanguage,tolanguage);
 }
 
-//Helper (nur um ein File zu createn!)
-function writeVocFile(path, data){
+function writeVocFile(path, data, fromlanguage, tolanguage){
     try{
-        fs.writeFileSync(path, 'ToLanguage;FromLanguage\n');    //file erstellung und überschrift
+        fs.writeFileSync(path, `${fromlanguage};${tolanguage}\n`);//file erstellung und überschrift
         data.forEach((item) =>{
-            let line = `${item.tolanguage};${item.fromlanguage}\n`;
+            let line = `${item.fromLanguage};${item.toLanguage}\n`;
             fs.appendFile(path, line, (error) =>{
                 if(error){
                     console.error(error)
