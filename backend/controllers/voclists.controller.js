@@ -1,5 +1,5 @@
 const sqllite3 = require('sqlite3');
-const fs = require("fs");
+const fs = require('fs');
 let db = new sqllite3.Database('../DB/VocaBattleDB.db', sqllite3.OPEN);
 
 // is_private == 1 (privat) // is_private == 0 (öffentlich)
@@ -10,14 +10,12 @@ exports.getListSignatures = async (req, res) =>
     let data = await getListSignaturesHelper(userId, sql, res);
     res.status(200).send(JSON.stringify(data));
 }
-
 exports.getPublicListSignatures = async (req, res) =>{
     const accessId = 0;   //0 sind publiclists, so umgeformt das ich den Helper gleich reusen kann
     let sql = 'select Id, Name from VocLists where Is_private == ?';
     let data = await getListSignaturesHelper(accessId, sql, res);
     res.status(200).send(JSON.stringify(data));
 }
-
 //Helper
 function getListSignaturesHelper(userId, sql, res){
     return new Promise(async (resolve, reject) =>
@@ -35,11 +33,8 @@ function getListSignaturesHelper(userId, sql, res){
             });
             resolve(allLists);
         });
-
     });
 }
-
-//TODO: get List inhalte auch noch auf private anpassen
 exports.getLists = async (req,res) => {
     const listId = req.query.listId;
     if(typeof req.query.listId == "undefined") {res.status(404).send("No List Params"); console.log("No Params")
@@ -49,7 +44,6 @@ exports.getLists = async (req,res) => {
         res.status(200).send(JSON.stringify(data));
     }
 }
-
 //Helper
 function getListById(id, sql, res){
     return new Promise( async (resolve, reject) =>{
@@ -77,10 +71,8 @@ function getListById(id, sql, res){
             }
             resolve(result);
         })
-
     })
 }
-
 exports.createList = async (req, res) => {
     //name, creator, isprivate, to/fromlanguage, path
     const listname = req.query.listname;
@@ -104,7 +96,6 @@ exports.createList = async (req, res) => {
     //file schreiben
     writeVocFile(path, wordlist,fromlanguage,tolanguage);
 }
-
 function writeVocFile(path, data, fromlanguage, tolanguage){
     try{
         fs.writeFileSync(path, `${fromlanguage};${tolanguage}\n`);//file erstellung und überschrift

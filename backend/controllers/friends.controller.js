@@ -5,14 +5,11 @@ let db = new sqllite3.Database('../DB/VocaBattleDB.db', sqllite3.OPEN);
 exports.getFriends = async (req, res) => {
     const userId = req.query.userId;
     let sql = 'select friend, users.username from Friends join Users on friend = users.userID where user == ?';
-
     let data = await getAllFriends(userId, sql,res);
-    console.log(data);
+    //console.log(data);
     res.status(200).send(JSON.stringify(data));
 }
-
 function getAllFriends(userId, sql, res){
-
     return new Promise(async (resolve,reject)=>{
         db.all(sql, [userId], (err, rows) => {
             if(err){
@@ -21,18 +18,15 @@ function getAllFriends(userId, sql, res){
             }
             let allfriends = [];
             let username;
-            console.log(rows);
-
+            //console.log(rows);
             rows.forEach((r) =>
             {
                 allfriends.push({userId: r.friend, username: r.username});
             });
             resolve(allfriends);
-
         });
     })
 }
-
 exports.addFriend = (req, res) => {
     const UserId = req.body.userId;
     const FriendId = parseInt(req.body.friendId["id"]);
@@ -54,7 +48,6 @@ exports.addFriend = (req, res) => {
         })
     })
 }
-
 exports.removeFriends = (req, res) => {
     const UserId = parseInt(req.query.userId);
     const FriendId = parseInt(JSON.parse(req.query.friendId)["id"]);
