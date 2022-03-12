@@ -1,14 +1,8 @@
-
 const config = require("../config/auth.config");
-
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 const sqlite3 = require("sqlite3");
 let db = new sqlite3.Database('../DB/VocaBattleDB.db',sqlite3.OPEN_READWRITE);
-
-
-// TODO auf sqlite3 umbauen
-// TODO Freunde auflisten und adden
 
 exports.signup = (req, res) => {
     // Save User to Database
@@ -25,19 +19,16 @@ exports.signup = (req, res) => {
             res.status(500).send({ message: err.message });
             return;
         }
-
         let sql3 = 'Insert into users_roles(userId, roleId) values (?,?)'
         db.run(sql3,[row.UserID,1], (err) =>{
             if (err) {
                 res.status(500).send({ message: err.message });
                 return;
             }
-
             res.send({ message: "User was registered successfully!" });
         })
     })
 };
-
 exports.signin = (req, res) => {
     // User.findOne({
     //     where: {
@@ -85,7 +76,6 @@ exports.signin = (req, res) => {
 
     const username = req.body.username;
     const password = req.body.password;
-
     const sql = "select * from Users where username == ?"
     db.get(sql, [username], (err, row) =>{
         if(row == null) res.status(404).send({message: 'User not found'});
@@ -98,15 +88,15 @@ exports.signin = (req, res) => {
         let username1 = row.username;
         let email1 = row.email;
 
-        if(!bcrypt.compareSync(password,pw)){
+        if(!bcrypt.compareSync(password,pw))
+        {
             return res.status(401).send({
-                                 accessToken: null,
-                                 message: "Invalid Password!"
-                             });
+                accessToken: null,
+                message: "Invalid Password!"
+            });
         }
 
         let token = jwt.sign({id: userId},config.secret,{expiresIn: 86400});
-
         let authorities = [];
         const sql2 = "select Roles.name from users_roles join roles on users_roles.roleId == Roles.id where users_roles.userId == ?;"
         db.all(sql2, [userId], (err, rows) =>{
@@ -114,17 +104,16 @@ exports.signin = (req, res) => {
                 res.status(500).send({ message: err.message });
                 return;
             }
-
             rows.forEach((row) =>{
                 authorities.push(row.Name);
             })
             res.status(200).send({
-                                 id: userId,
-                                 username: username1,
-                                 email: email1,
-                                 roles: authorities,
-                                 accessToken: token
-                             });
+                id: userId,
+                username: username1,
+                email: email1,
+                roles: authorities,
+                accessToken: token
+            });
         });
     })
 };

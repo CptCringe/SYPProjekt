@@ -3,19 +3,13 @@ const config = require("../config/auth.config.js");
 const sqlite3 = require("sqlite3");
 let db = new sqlite3.Database('../DB/VocaBattleDB.db',sqlite3.OPEN_READWRITE);
 
-
-//TODO Testen
-
-
 verifyToken = (req, res, next) => {
     let token = req.headers["x-access-token"];
-
     if (!token) {
         return res.status(403).send({
             message: "No token provided!"
         });
     }
-
     jwt.verify(token, config.secret, (err, decoded) => {
         if (err) {
             return res.status(401).send({
@@ -26,7 +20,6 @@ verifyToken = (req, res, next) => {
         next();
     });
 };
-
 isAdmin = (req, res, next) => {
     // User.findByPk(req.userId).then(user => {
     //     user.getRoles().then(roles => {
@@ -36,7 +29,6 @@ isAdmin = (req, res, next) => {
     //                 return;
     //             }
     //         }
-    //
     //         res.status(403).send({
     //             message: "Require Admin Role!"
     //         });
@@ -45,21 +37,17 @@ isAdmin = (req, res, next) => {
     // });
     let sql = `select * from users_roles join Roles on users_roles.roleId == Roles.id where userId == ?;`;
     let userId = req.userId;
-
-// first row only
+    // first row only
     db.each(sql, [userId], (err, row) => {
         if (err) {
             return console.error(err.message);
         }
         if(row.name === "admin") return row;
-
     });
     res.status(403).send({
         message: "Require Admin Role!"
     })
-
 };
-
 isModerator = (req, res, next) => {
     // User.findByPk(req.userId).then(user => {
     //     user.getRoles().then(roles => {
@@ -69,7 +57,6 @@ isModerator = (req, res, next) => {
     //                 return;
     //             }
     //         }
-    //
     //         res.status(403).send({
     //             message: "Require Moderator Role!"
     //         });
@@ -78,19 +65,16 @@ isModerator = (req, res, next) => {
     let sql = `select * from users_roles join Roles on users_roles.roleId == Roles.id where userId == ?;`;
     let userId = req.userId;
 
-
     db.each(sql, [userId], (err, row) => {
         if (err) {
             return console.error(err.message);
         }
         if(row.name === "moderator") return row;
-
     });
     res.status(403).send({
         message: "Require Moderator Role!"
     })
 };
-
 isModeratorOrAdmin = (req, res, next) => {
     // User.findByPk(req.userId).then(user => {
     //     user.getRoles().then(roles => {
@@ -99,13 +83,11 @@ isModeratorOrAdmin = (req, res, next) => {
     //                 next();
     //                 return;
     //             }
-    //
     //             if (roles[i].name === "admin") {
     //                 next();
     //                 return;
     //             }
     //         }
-    //
     //         res.status(403).send({
     //             message: "Require Moderator or Admin Role!"
     //         });
@@ -113,7 +95,6 @@ isModeratorOrAdmin = (req, res, next) => {
     // });
     let sql = `select * from users_roles join Roles on users_roles.roleId == Roles.id where userId == ?;`;
     let userId = req.userId;
-
 
     db.each(sql, [userId], (err, row) => {
         if (err) {

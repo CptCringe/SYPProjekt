@@ -9,12 +9,9 @@ const http = require('http');
 var corsOptions = {
     origin: "*"
 };
-
 app.use(cors(corsOptions));
-
 // parse requests of content-type - application/json
 app.use(express.json());
-
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 app.use(jsonParser)
@@ -22,7 +19,6 @@ app.use(jsonParser)
 app.get("/", (req, res) => {
     res.json({ message: "Welcome to Fabians application." });
 });
-
 //routes
 require('./routes/auth.routes.js')(app);
 require('./routes/user.routes.js')(app);
