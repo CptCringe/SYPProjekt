@@ -1,8 +1,10 @@
 const express = require("express");
 const cors = require("cors");
-var bodyParser = require('body-parser');
-var jsonParser = bodyParser.json()
+const bodyParser = require('body-parser');
+const jsonParser = bodyParser.json()
 const app = express();
+const http = require('http');
+
 
 var corsOptions = {
     origin: "*"
@@ -27,8 +29,22 @@ require('./routes/user.routes.js')(app);
 require('./routes/friends.routes.js')(app);
 require('./routes/voclists.routes.js')(app);
 
+const server = http.createServer(app);
+const { Server } = require('socket.io');
+const io = new Server(server,{cors: {
+    origin: "*"
+    }});
+io.on('connection', (socket) =>{
+    console.log("A user has connected!");
+    io.on('disconnect', () =>{
+        console.log("A user has disconnected!");
+    })
+
+});
+
+
 // set port, listen for requests
 const PORT = process.env.PORT || 8081;
-app.listen(PORT, '0.0.0.0',() => {
+server.listen(8081, '0.0.0.0',() => {
     console.log(`Server is running on port ${PORT}.`);
 });

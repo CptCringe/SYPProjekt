@@ -17,9 +17,11 @@
     "core-js": "^3.6.5",
     "jquery": "^3.6.0",
     "popper.js": "^1.16.1",
+    "socket.io-client": "^4.4.1",
     "vee-validate": "^4.5.7",
     "vue": "^3.0.0",
     "vue-router": "^4.0.12",
+    "vue-socket.io": "^3.0.10",
     "vuex": "^4.0.2",
     "yup": "^0.32.11"
   },

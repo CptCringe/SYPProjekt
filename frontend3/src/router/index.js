@@ -7,6 +7,7 @@ import Vocablists from "../components/Vocablist.vue";
 import ListView from "../components/ListView";
 import EditUser from "../components/EditUser";
 import ListEditor from "../components/ListEditor";
+import StandardBattle from "../components/StandardBattle";
 
 // lazy-loaded
 const Profile = () => import("../components/Profile.vue")
@@ -80,6 +81,11 @@ const routes = [
     name: "listEditor",
     component: ListEditor,
   },
+  {
+    path: "/battle",
+    name: "battle",
+    component: StandardBattle
+  }
 ];
 
 const index = createRouter({
