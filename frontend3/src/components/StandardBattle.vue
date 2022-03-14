@@ -12,7 +12,13 @@ export default {
   },
   created() {
     SocketIoService.setupSocketConnection();
+  },
+
+  beforeUnmount() {
+    SocketIoService.disconnect();
   }
+
+
 }
 </script>
 

@@ -32,12 +32,29 @@ const io = new Server(server,{cors: {
     }});
 io.on('connection', (socket) =>{
     console.log("A user has connected!");
-    io.on('disconnect', () =>{
+
+    io.emit('Message', `server: This is a test Broadcast!`)
+
+    socket.on('createRoom',(room) =>{
+        socket.join(room);
+        socket.on('RoomMessage', (msg) =>{
+            io.sockets.in(room).emit('NewMessage', msg);
+        });
+    });
+
+    socket.on('joinRoom', (room) => {
+        socket.join(room);
+        socket.on('RoomMessage', (msg) =>{
+            io.sockets.in(room).emit('NewMessage', msg);
+        });
+    });
+
+    socket.on('disconnect', () =>{
         console.log("A user has disconnected!");
-    })
+    });
+
 
 });
-
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8081;
