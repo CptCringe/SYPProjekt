@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <header class="jumbotron">
-      <h3>This is the Home Site</h3>
+      <h1 style="font-size: 50px; text-align: center">This is the Home Site</h1>
     </header>
   </div>
 </template>

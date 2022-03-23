@@ -9,23 +9,23 @@
       <Form @submit="handleRegister" :validation-schema="schema">
         <div v-if="!successful">
           <div class="form-group">
-            <label for="username">Username</label>
+            <label for="username" style="font-size: 25px">Username</label>
             <Field name="username" type="text" class="form-control" />
-            <ErrorMessage name="username" class="error-feedback" />
+            <ErrorMessage name="username" class="error-feedback" style="font-size: 25px"/>
           </div>
           <div class="form-group">
-            <label for="email">Email</label>
+            <label for="email" style="font-size: 25px">Email</label>
             <Field name="email" type="email" class="form-control" />
-            <ErrorMessage name="email" class="error-feedback" />
+            <ErrorMessage name="email" class="error-feedback" style="font-size: 25px" />
           </div>
           <div class="form-group">
-            <label for="password">Password</label>
+            <label for="password" style="font-size: 25px">Password</label>
             <Field name="password" type="password" class="form-control" />
-            <ErrorMessage name="password" class="error-feedback" />
+            <ErrorMessage name="password" class="error-feedback" style="font-size: 25px"/>
           </div>
 
           <div class="form-group">
-            <button class="btn btn-primary btn-block" :disabled="loading">
+            <button class="btn btn-primary btn-block" :disabled="loading" style="font-size: 25px">
               <span
                   v-show="loading"
                   class="spinner-border spinner-border-sm"

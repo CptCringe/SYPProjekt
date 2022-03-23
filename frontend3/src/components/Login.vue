@@ -1,4 +1,4 @@
-  <template>
+<template>
   <div class="col-md-12">
     <div class="card card-container">
       <img
@@ -8,14 +8,14 @@
       />
       <Form @submit="handleLogin" :validation-schema="schema">
         <div class="form-group">
-          <label for="username">Username</label>
+          <label for="username" style="font-size: 25px">Username</label>
           <Field name="username" type="text" class="form-control" />
-          <ErrorMessage name="username" class="error-feedback" />
+          <ErrorMessage name="username" class="error-feedback" style="font-size: 25px" />
         </div>
         <div class="form-group">
-          <label for="password">Password</label>
+          <label for="password" style="font-size: 25px">Password</label>
           <Field name="password" type="password" class="form-control" />
-          <ErrorMessage name="password" class="error-feedback" />
+          <ErrorMessage name="password" class="error-feedback" style="font-size: 25px"/>
         </div>
 
         <div class="form-group">
@@ -24,7 +24,7 @@
                 v-show="loading"
                 class="spinner-border spinner-border-sm"
             ></span>
-            <span>Login</span>
+            <span style="font-size: 25px">Login</span>
           </button>
         </div>
 

@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand navbar-dark bg-dark">
-      <a href="/" class="navbar-brand">VocaBattle</a>
+    <nav class="navbar navbar-expand  " style="background-color: orange">
+      <a href="/" class="navbar-brand" style="font-size: 35px">VocaBattle</a>
       <div class="navbar-nav mr-auto" >
         <li class="nav-item">
-          <router-link to="/home" class="nav-link">
-            <font-awesome-icon icon="home" /> Home
+          <router-link to="/home" class="nav-link" style="font-size: 25px">
+            <font-awesome-icon icon="home" style="font-size: 25px"/> Home
           </router-link>
         </li>
         <li v-if="showAdminBoard" class="nav-item">
@@ -24,13 +24,13 @@
 
       <div v-if="!currentUser" class="navbar-nav ml-auto">
         <li class="nav-item">
-          <router-link to="/register" class="nav-link">
-            <font-awesome-icon icon="user-plus" /> Sign Up
+          <router-link to="/register" class="nav-link" style="font-size: 25px">
+            <font-awesome-icon icon="user-plus" style="font-size: 25px" /> Sign Up
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/login" class="nav-link">
-            <font-awesome-icon icon="sign-in-alt" /> Login
+          <router-link to="/login" class="nav-link" style="font-size: 25px">
+            <font-awesome-icon icon="sign-in-alt" style="font-size: 25px" /> Login
           </router-link>
         </li>
       </div>
@@ -38,7 +38,7 @@
       <div v-if="currentUser" class="navbar-nav ml-auto">
         <li class="nav-item">
           <router-link to="/profile" class="nav-link">
-            <font-awesome-icon icon="user" />
+            <font-awesome-icon icon="user"/>
             {{ currentUser.username }}
           </router-link>
         </li>
