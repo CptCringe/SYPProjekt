@@ -36,7 +36,7 @@ export default {
       loading: false,
       error: null,
       roomName: "",
-      socket: io("http://localhost:8081"),
+      socket: io("http://localhost:8081/chat"),
       selection: 0,
       choices:[],
       message: "",

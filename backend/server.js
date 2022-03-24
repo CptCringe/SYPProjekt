@@ -34,7 +34,39 @@ const { Server } = require('socket.io');
 const io = new Server(server,{cors: {
     origin: "*"
     }});
-io.on('connection', async (socket) => {
+io.of("/battle").on('connection', async (socket) => {
+    console.log("A user has connected!");
+
+    io.emit('Message', `server: This is a test Broadcast!`)
+
+
+
+    socket.on('disconnect', () => {
+        console.log("A user has disconnected!");
+    });
+
+
+    // BATTLE HANDLING
+    // TODO BATTLE LOGIK EINBAUEN
+    socket.on('createRoom', (room) => {
+        console.log("join");
+        socket.join(room);
+        socket.on('RoomMessage', (msg) => {
+            io.sockets.in(room).emit('NewMessage', msg);
+        });
+    });
+
+
+    socket.on('joinRoom', (room) => {
+        console.log("join");
+        socket.join(room);
+        socket.on('RoomMessage', (msg) => {
+            io.sockets.in(room).emit('NewMessage', msg);
+        });
+    });
+});
+
+io.of("/chat").on('connection',async (socket) => {
     console.log("A user has connected!");
 
     io.emit('Message', `server: This is a test Broadcast!`)
@@ -60,27 +92,10 @@ io.on('connection', async (socket) => {
         fs.writeFileSync("messagelog.txt", JSON.stringify(allMessages2));
 
         console.log(data);
-        io.emit('MESSAGE', data)
+        io.of("/chat").emit('MESSAGE', data);
     });
 
-    // BATTLE HANDLING
-    socket.on('createRoom', (room) => {
-        console.log("join");
-        socket.join(room);
-        socket.on('RoomMessage', (msg) => {
-            io.sockets.in(room).emit('NewMessage', msg);
-        });
-    });
-
-
-    socket.on('joinRoom', (room) => {
-        console.log("join");
-        socket.join(room);
-        socket.on('RoomMessage', (msg) => {
-            io.sockets.in(room).emit('NewMessage', msg);
-        });
-    });
-});
+})
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8081;

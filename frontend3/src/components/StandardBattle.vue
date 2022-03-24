@@ -45,7 +45,7 @@ export default {
       loading: false,
       error: null,
       roomName: "",
-      socket: io("http://localhost:8081"),
+      socket: io("http://localhost:8081/battle"),
       selection: 0,
       choices: [],
       joinedRoom: false,
