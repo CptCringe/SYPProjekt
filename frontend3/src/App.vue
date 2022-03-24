@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand  " style="background-color: orange">
+    <nav class="navbar navbar-expand  " >
       <a href="/" class="navbar-brand" style="font-size: 35px">VocaBattle</a>
       <div class="navbar-nav mr-auto" >
         <li class="nav-item">
-          <router-link to="/home" class="nav-link" style="font-size: 25px">
-            <font-awesome-icon icon="home" style="font-size: 25px"/> Home
+          <router-link to="/home" class="nav-link" >
+            <font-awesome-icon icon="home" style="font-size: 100%"/> Home
           </router-link>
         </li>
         <li v-if="showAdminBoard" class="nav-item">
@@ -91,3 +91,32 @@ export default {
   }
 };
 </script>
+<style>
+
+  nav {
+    background-color: orange;
+  }
+  li{
+    font-size: 150%;
+    color: black;
+  }
+
+  a.nav-link{
+    color: black;
+    color:black;
+    transition: all .4s ease;
+  }
+  a.navbar-brand{
+    color:black;
+    transition: all .4s ease;
+  }
+
+  a.nav-link:hover{
+    color: white;
+  }
+  a.navbar-brand:hover{
+    color:white;
+  }
+
+
+</style>
