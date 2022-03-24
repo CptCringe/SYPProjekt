@@ -7,6 +7,7 @@ import Vocablists from "../components/Vocablist.vue";
 import ListView from "../components/ListView";
 import EditUser from "../components/EditUser";
 import ListEditor from "../components/ListEditor";
+import GlobalChat from "../components/GlobalChat";
 import StandardBattle from "../components/StandardBattle";
 
 // lazy-loaded
@@ -80,6 +81,11 @@ const routes = [
     path: "/listEditor",
     name: "listEditor",
     component: ListEditor,
+  },
+  {
+    path: "/chat",
+    name: "chat",
+    component: GlobalChat
   },
   {
     path: "/battle",

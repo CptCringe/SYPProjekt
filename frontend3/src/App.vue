@@ -8,18 +8,16 @@
             <font-awesome-icon icon="home" style="font-size: 100%"/> Home
           </router-link>
         </li>
-        <li v-if="showAdminBoard" class="nav-item">
-          <router-link to="/admin" class="nav-link">Admin Board</router-link>
-        </li>
-        <li v-if="showModeratorBoard" class="nav-item">
-          <router-link to="/mod" class="nav-link">Moderator Board</router-link>
-        </li>
         <li v-if="currentUser" class="nav-item">
           <router-link to="/vocablists" class="nav-link">Vocablists</router-link>
         </li>
-        <li class="nav-item">
-          <router-link v-if="currentUser" to="/user" class="nav-link">User</router-link>
+        <li v-if="currentUser" class="nav-item">
+          <router-link to="/chat" class="nav-link">Global Chat</router-link>
         </li>
+        <li v-if="currentUser" class="nav-item">
+          <router-link to="/battle" class="nav-link">Standard Battle</router-link>
+        </li>
+
       </div>
 
       <div v-if="!currentUser" class="navbar-nav ml-auto">
