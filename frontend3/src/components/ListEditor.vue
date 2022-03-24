@@ -14,7 +14,7 @@
       <input type="file" id="upload" name="upload" v-on:change="readCsv()">
     </div>
     <div>
-      <label for="isPrivate">List Name</label>
+      <label for="listName">List Name</label>
       <input type="text" id="listName" name="listName" v-on:change="saveNewName()">
     </div>
     <div  id="voc-list">

@@ -6,8 +6,9 @@ class SocketIoService {
     constructor() {}
 
     setupSocketConnection() {
-        this.socket = io("http://localhost:8081");
-
+        this.socket = io("http://localhost:8081",{autoConnect: false});
+        this.socket.auth = JSON.parse(localStorage.getItem('user')).username;
+        this.socket.connect();
         this.socket.on('Message', (data) => {
             console.log(data);
         });
@@ -23,6 +24,11 @@ class SocketIoService {
         if(this.socket){
             this.curRoom = room;
             this.socket.emit('createRoom',room);
+
+            this.socket.on('NewMessage', (msg) =>{
+                console.log(msg);
+            });
+
         }
     }
 
@@ -32,6 +38,10 @@ class SocketIoService {
         if(this.socket){
             this.curRoom = room;
             this.socket.emit('joinRoom', room);
+            this.socket.emit('RoomMessage', 'Heeyy i jooined what upp?');
+            this.socket.on('NewMessage', (msg) =>{
+                console.log(msg);
+            });
         }
     }
 

@@ -78,7 +78,10 @@ exports.signin = (req, res) => {
     const password = req.body.password;
     const sql = "select * from Users where username == ?"
     db.get(sql, [username], (err, row) =>{
-        if(row == null) res.status(404).send({message: 'User not found'});
+        if(row == null)
+        {
+            return res.status(404).send({message: 'User not found'});
+        }
         if (err) {
             res.status(500).send({ message: err.message });
             return;

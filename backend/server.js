@@ -36,13 +36,17 @@ io.on('connection', (socket) =>{
     io.emit('Message', `server: This is a test Broadcast!`)
 
     socket.on('createRoom',(room) =>{
+        console.log("join");
         socket.join(room);
         socket.on('RoomMessage', (msg) =>{
             io.sockets.in(room).emit('NewMessage', msg);
         });
     });
 
+
+
     socket.on('joinRoom', (room) => {
+        console.log("join");
         socket.join(room);
         socket.on('RoomMessage', (msg) =>{
             io.sockets.in(room).emit('NewMessage', msg);
