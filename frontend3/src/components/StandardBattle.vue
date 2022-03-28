@@ -4,8 +4,8 @@
     <div class="card-body">
       <div class="card-title">
         <h3>BATTLE</h3>
-        <label for="roomName">Room Name</label>
-        <input type="text" id="roomName" name="roomName" v-on:change="saveRoomName()">
+        <label for="roomName" v-if="!joinedRoom">Room Name</label>
+        <input type="text" id="roomName" name="roomName" v-on:change="saveRoomName()" v-if="!joinedRoom">
         <button v-if="!joinedRoom" v-on:click="joinRoom()">Join Room</button>
         <button v-if="joinedRoom" v-on:click="leaveRoom()">Leave Room</button>
       </div>
