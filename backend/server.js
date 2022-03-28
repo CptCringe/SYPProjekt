@@ -34,12 +34,12 @@ const { Server } = require('socket.io');
 const io = new Server(server,{cors: {
     origin: "*"
     }});
+
+
 io.of("/battle").on('connection', async (socket) => {
     console.log("A user has connected!");
 
     io.emit('Message', `server: This is a test Broadcast!`)
-
-
 
     socket.on('disconnect', () => {
         console.log("A user has disconnected!");
@@ -48,7 +48,6 @@ io.of("/battle").on('connection', async (socket) => {
     let roomName = "";
     // BATTLE HANDLING
     // TODO BATTLE LOGIK EINBAUEN
-    // TODO USERNAME IMMER MITGEBEN
     socket.on('joinRoom', (room) => {
         console.log("join");
         socket.join(room.roomName);
@@ -61,11 +60,22 @@ io.of("/battle").on('connection', async (socket) => {
         });
     });
 
+    socket.on('startGame', (data) => {
+       console.log('startGame')
+       // schauen wie viele in dem Raum sind
+       // bei user >= 2 starten
+       // random choices schicken (zuerst nur einmal)
+       socket.to(roomName).emit('STARTED_GAME', {user: data.user, choices:['','','']})
+    });
+
+    socket.on('nextQuestion', (data) => {
+        
+    });
+
     socket.on('leaveRoom', (data) => {
         socket.leave(roomName);
         let message = "Left the room!"
         socket.to(roomName).emit('SERVER_MESSAGE',{user: data.user , message: message});
-
     });
 });
 
@@ -73,8 +83,6 @@ io.of("/chat").on('connection',async (socket) => {
     console.log("A user has connected!");
 
     io.emit('Message', `server: This is a test Broadcast!`)
-
-
 
     socket.on('disconnect', () => {
         console.log("A user has disconnected!");
@@ -88,7 +96,7 @@ io.of("/chat").on('connection',async (socket) => {
     socket.on('SEND_MESSAGE', function (data) {
         let allMessages2=[];
         allMessages2 = JSON.parse(fs.readFileSync("messagelog.txt","utf-8"));
-        if(allMessages2.length ==10){
+        if(allMessages2.length == 10){
             allMessages2.shift();
         }
         allMessages2.push(data);
@@ -97,7 +105,6 @@ io.of("/chat").on('connection',async (socket) => {
         console.log(data);
         io.of("/chat").emit('MESSAGE', data);
     });
-
 })
 
 // set port, listen for requests
