@@ -45,24 +45,27 @@ io.of("/battle").on('connection', async (socket) => {
         console.log("A user has disconnected!");
     });
 
-
+    let roomName = "";
     // BATTLE HANDLING
     // TODO BATTLE LOGIK EINBAUEN
-    socket.on('createRoom', (room) => {
+    // TODO USERNAME IMMER MITGEBEN
+    socket.on('joinRoom', (room) => {
         console.log("join");
-        socket.join(room);
+        socket.join(room.roomName);
+        roomName = room.roomName;
+        let message = "Joined the room!"
+        socket.to(room.roomName).emit('SERVER_MESSAGE',{user: room.user , message: message});
+
         socket.on('RoomMessage', (msg) => {
-            io.sockets.in(room).emit('NewMessage', msg);
+            io.sockets.in(room.roomName).emit('NewMessage', msg);
         });
     });
 
+    socket.on('leaveRoom', (data) => {
+        socket.leave(roomName);
+        let message = "Left the room!"
+        socket.to(roomName).emit('SERVER_MESSAGE',{user: data.user , message: message});
 
-    socket.on('joinRoom', (room) => {
-        console.log("join");
-        socket.join(room);
-        socket.on('RoomMessage', (msg) => {
-            io.sockets.in(room).emit('NewMessage', msg);
-        });
     });
 });
 

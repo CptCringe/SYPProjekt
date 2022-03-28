@@ -6,8 +6,8 @@
         <h3>BATTLE</h3>
         <label for="roomName">Room Name</label>
         <input type="text" id="roomName" name="roomName" v-on:change="saveRoomName()">
-        <button v-on:click="joinRoom()">Join Room</button>
-        <button v-on:click="createRoom()">Create Room</button>
+        <button v-if="!joinedRoom" v-on:click="joinRoom()">Join Room</button>
+        <button v-if="joinedRoom" v-on:click="leaveRoom()">Leave Room</button>
       </div>
       <div class="card-body">
         <div class="messages" v-for="(msg, index) in messages" :key="index">
@@ -58,14 +58,14 @@ export default {
     saveRoomName() {
       this.roomName = document.getElementById("roomName").value;
     },
-    createRoom() {
-      this.socket.emit('createRoom', this.roomName);
-      this.joinedRoom = true;
-
-    },
     joinRoom() {
-      this.socket.emit('joinRoom', this.roomName);
+      this.socket.emit('joinRoom', {roomName: this.roomName, user: this.user.username});
       this.joinedRoom = true;
+    },
+    leaveRoom() {
+      this.socket.emit('leaveRoom',{user: this.user.username});
+      this.joinedRoom = false;
+      this.messages = [];
     },
     sendMessage(e) {
       e.preventDefault();
@@ -80,7 +80,7 @@ export default {
     //this.socket.auth = JSON.parse(localStorage.getItem('user')).username;
     this.socket.on('SERVER_MESSAGE', (data) => {
       this.messages.push(data);
-
+      console.log(data);
     });
   },
 
