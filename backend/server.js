@@ -37,26 +37,26 @@ const io = new Server(server,{cors: {
 
 
 io.of("/battle").on('connection', async (socket) => {
-    console.log("A user has connected!");
+    console.log("A user has connected to battle socket!");
 
     io.emit('Message', `server: This is a test Broadcast!`)
 
     socket.on('disconnect', () => {
-        console.log("A user has disconnected!");
+        console.log("A user has disconnected from battle socket!");
     });
 
     let roomName = "";
     // BATTLE HANDLING
     // TODO BATTLE LOGIK EINBAUEN
     socket.on('joinRoom', (room) => {
-        console.log("join");
+        console.log("joined room " + room.roomName);
         socket.join(room.roomName);
         roomName = room.roomName;
         let message = "Joined the room!"
-        socket.to(room.roomName).emit('SERVER_MESSAGE',{user: room.user , message: message});
+        socket.to(roomName).emit('SERVER_MESSAGE',{user: room.user , message: message});
 
         socket.on('RoomMessage', (msg) => {
-            io.sockets.in(room.roomName).emit('NewMessage', msg);
+            io.sockets.in(roomName).emit('NewMessage', msg);
         });
     });
 
@@ -69,23 +69,24 @@ io.of("/battle").on('connection', async (socket) => {
     });
 
     socket.on('nextQuestion', (data) => {
-        
+
     });
 
     socket.on('leaveRoom', (data) => {
         socket.leave(roomName);
+        console.log('left room ' + roomName)
         let message = "Left the room!"
         socket.to(roomName).emit('SERVER_MESSAGE',{user: data.user , message: message});
     });
 });
 
 io.of("/chat").on('connection',async (socket) => {
-    console.log("A user has connected!");
+    console.log("A user has connected to chat socket!");
 
     io.emit('Message', `server: This is a test Broadcast!`)
 
     socket.on('disconnect', () => {
-        console.log("A user has disconnected!");
+        console.log("A user has disconnected from chat socket!");
     });
 
     // CHAT HANDLING

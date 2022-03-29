@@ -38,7 +38,7 @@
 import io from 'socket.io-client';
 
 export default {
-  name: "GlobalChat",
+  name: "StandardBattle",
   data() {
     return {
       user: JSON.parse(localStorage.getItem('user')),
@@ -80,16 +80,12 @@ export default {
     //this.socket.auth = JSON.parse(localStorage.getItem('user')).username;
     this.socket.on('SERVER_MESSAGE', (data) => {
       this.messages.push(data);
-      console.log(data);
     });
   },
-
 
   beforeUnmount() {
     this.socket.disconnect();
   }
-
-
 }
 </script>
 
