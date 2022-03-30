@@ -39,14 +39,14 @@ let numClients = {};
 let questions = [
     {question: 'Was heißt Hund auf Englisch?', choices:['dog', 'cat', 'seal']},
     {question: 'Was heißt Haus auf Englisch?', choices:['house', 'yacht', 'tank']},
-    {question: '', solution: '', choices:[]},
-    {question: '', solution: '', choices:[]},
-    {question: '', solution: '', choices:[]},
-    {question: '', solution: '', choices:[]},
-    {question: '', solution: '', choices:[]},
-    {question: '', solution: '', choices:[]},
-    {question: '', solution: '', choices:[]},
-    {question: '', solution: '', choices:[]},
+    {question: 'Was heißt Baum auf Englisch?', choices:['tree', 'flower', 'grass']},
+    {question: 'Was heißt Kerze auf Englisch?', choices:['candle', 'torch', 'fire']},
+    {question: 'Was heißt Glühbirne auf Englisch?', choices:['lightbulb', 'light', 'candle']},
+    {question: 'Was heißt Tür auf Englisch?', choices:['door', 'window', 'car']},
+    {question: 'Was heißt Auto auf Englisch?', choices:['car', 'train', 'plane']},
+    {question: 'Was heißt Flugzeug auf Englisch?', choices:['airplane', 'ship', 'bus']},
+    {question: 'Was heißt Mond auf Englisch?', choices:['moon', 'earth', 'uranus']},
+    {question: 'Was heißt Bildschirm auf Englisch?', choices:['display', 'notebook', 'computer']}
 ];
 io.of("/battle").on('connection', async (socket) => {
     console.log("A user has connected to battle socket!");
@@ -75,22 +75,48 @@ io.of("/battle").on('connection', async (socket) => {
         console.log(`People in Room ${roomName}: ${numClients[roomName]}`);
 
         let message = "Joined the room!"
-        socket.to(roomName).emit('SERVER_MESSAGE',{user: room.user , message: message});
+        io.of("/battle").to(roomName).emit('SERVER_MESSAGE',{user: room.user , message: message});
 
         socket.on('RoomMessage', (msg) => {
             io.sockets.in(roomName).emit('NewMessage', msg);
         });
     });
 
-    socket.on('startGame', (data) => {
+    let selectedQuestion = 0;
+
+    socket.on('startGame', () => {
        console.log('startGame')
        // schauen wie viele in dem Raum sind
        // bei user >= 2 starten
        // random choices schicken (zuerst nur einmal)
-       socket.to(roomName).emit('STARTED_GAME', {user: data.user, choices:['Hund','Katze','Maus']});
+        if(numClients[roomName] >= 2){
+            io.of("/battle").to(roomName).emit('STARTED_GAME', {started: true ,question: questions[selectedQuestion]});
+        }else{
+            io.of("/battle").to(roomName).emit('STARTED_GAME', {started: false ,question: null});
+        }
     });
 
-    socket.on('nextQuestion', (data) => {
+    socket.on('nextQuestion', () => {
+        selectedQuestion++;
+
+        if(questions[selectedQuestion] != undefined){
+            io.of("/battle").to(roomName).emit('NEW_QUESTION', {question: questions[selectedQuestion]});
+        }else{
+            io.of("/battle").to(roomName).emit('GAME_ENDED', {message: "game ended"});
+        }
+    });
+
+    socket.on('MADE_SELECTION', (data)=>{
+        let username = data.username;
+        let selection = data.selection;
+
+        // Erstes element ist immer richtig
+        if(selection == 0){
+            io.of("/battle").to(roomName).emit('SELECTION_RESULT', {user: username, message: "Hat es erraten. Richtig war " + questions[selectedQuestion].choices[0]});
+            io.of("/battle").to(roomName).emit('nextQuestion');
+        }else{
+            io.of("/battle").to(roomName).emit('SELECTION_RESULT', {user: username, message: "Hat es leider nicht erraten :("});
+        }
 
     });
 
@@ -102,7 +128,7 @@ io.of("/battle").on('connection', async (socket) => {
         console.log(`People in Room ${roomName}: ${numClients[roomName]}`);
 
         let message = "Left the room!"
-        socket.to(roomName).emit('SERVER_MESSAGE',{user: data.user , message: message});
+        io.of("/battle").to(roomName).emit('SERVER_MESSAGE',{user: data.user , message: message});
     });
 });
 

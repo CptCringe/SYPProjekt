@@ -17,14 +17,15 @@
       </div>
     </div>
     <div v-if="joinedRoom" class="card-footer">
-      <form @submit.prevent="sendMessage">
-        <div class="gorm-group pb-3">
+        <div class="gorm-group pb-3" v-if="this.gameStarted">
           <button type="submit" class="btn btn-success">Selection 1</button>
           <button type="submit" class="btn btn-success">Selection 2</button>
           <button type="submit" class="btn btn-success">Selection 3</button>
         </div>
+        <div v-if="!gameStarted">
+          <button type="submit" class="btn btn-success" v-on:click="startGame">Start Game</button>
+        </div>
 
-      </form>
     </div>
     <div v-if="!joinedRoom" class="card-footer">
       <h3>Tritt zuerst einem Raum bei :)</h3>
@@ -48,9 +49,11 @@ export default {
       socket: io("http://localhost:8081/battle"),
       selection: 0,
       choices: [],
+      question: "",
       joinedRoom: false,
       message: "",
-      messages: []
+      messages: [],
+      gameStarted: false
     }
   },
 
@@ -67,6 +70,20 @@ export default {
       this.joinedRoom = false;
       this.messages = [];
     },
+    startGame(){
+      if(this.joinedRoom == true){
+        this.socket.emit('startGame');
+      }
+    },
+    selectionOne(){
+      //TODO
+    },
+    selectionTwo(){
+
+    },
+    selectionThree(){
+
+    },
     sendMessage(e) {
       e.preventDefault();
 
@@ -81,6 +98,30 @@ export default {
     this.socket.on('SERVER_MESSAGE', (data) => {
       this.messages.push(data);
     });
+    this.socket.on('STARTED_GAME', (data) =>{
+      if(data.started == true){
+        this.gameStarted = true;
+        this.choices = data.question.choices;
+        this.question = data.question.question;
+        this.messages.push({user: "Server", message: "Game has started!"});
+        this.messages.push({user: "Server", message: this.question});
+      }else {
+        console.log("Zu wenig spieler");
+        this.messages.push({user: "Server", message: "Zu wenig Spieler! Mindestens 2"});
+
+      }
+
+    });
+    this.socket.on('NEW_QUESTION', (data) => {
+      data.question.choices.forEach((item, index) => { this.choices.push({oldIndex: index,choice: item})});
+
+      this.choices = this.choices.sort(() => Math.random() - 0.5) // Mischen
+
+      this.messages.push({user: "Server", message: data.question.question})
+    });
+    this.socket.on('SLECTION_RESULT', (message) => {
+      this.messages.push(message);
+    })
   },
 
   beforeUnmount() {
