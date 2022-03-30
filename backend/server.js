@@ -35,7 +35,19 @@ const io = new Server(server,{cors: {
     origin: "*"
     }});
 
-
+let numClients = {};
+let questions = [
+    {question: 'Was heißt Hund auf Englisch?', choices:['dog', 'cat', 'seal']},
+    {question: 'Was heißt Haus auf Englisch?', choices:['house', 'yacht', 'tank']},
+    {question: '', solution: '', choices:[]},
+    {question: '', solution: '', choices:[]},
+    {question: '', solution: '', choices:[]},
+    {question: '', solution: '', choices:[]},
+    {question: '', solution: '', choices:[]},
+    {question: '', solution: '', choices:[]},
+    {question: '', solution: '', choices:[]},
+    {question: '', solution: '', choices:[]},
+];
 io.of("/battle").on('connection', async (socket) => {
     console.log("A user has connected to battle socket!");
 
@@ -43,15 +55,25 @@ io.of("/battle").on('connection', async (socket) => {
 
     socket.on('disconnect', () => {
         console.log("A user has disconnected from battle socket!");
+        numClients[roomName]--;
+        console.log(`People in Room ${roomName}: ${numClients[roomName]}`);
     });
 
     let roomName = "";
-    // BATTLE HANDLING
     // TODO BATTLE LOGIK EINBAUEN
     socket.on('joinRoom', (room) => {
-        console.log("joined room " + room.roomName);
+        console.log(room.user + " joined room " + room.roomName);
         socket.join(room.roomName);
         roomName = room.roomName;
+
+        //check if room existing
+        if(numClients[roomName] == undefined){
+            numClients[roomName] = 1;
+        }else{
+            numClients[roomName]++;
+        }
+        console.log(`People in Room ${roomName}: ${numClients[roomName]}`);
+
         let message = "Joined the room!"
         socket.to(roomName).emit('SERVER_MESSAGE',{user: room.user , message: message});
 
@@ -65,7 +87,7 @@ io.of("/battle").on('connection', async (socket) => {
        // schauen wie viele in dem Raum sind
        // bei user >= 2 starten
        // random choices schicken (zuerst nur einmal)
-       socket.to(roomName).emit('STARTED_GAME', {user: data.user, choices:['','','']})
+       socket.to(roomName).emit('STARTED_GAME', {user: data.user, choices:['Hund','Katze','Maus']});
     });
 
     socket.on('nextQuestion', (data) => {
@@ -74,7 +96,11 @@ io.of("/battle").on('connection', async (socket) => {
 
     socket.on('leaveRoom', (data) => {
         socket.leave(roomName);
-        console.log('left room ' + roomName)
+        console.log(data.user + ' left room ' + roomName)
+
+        numClients[roomName]--;
+        console.log(`People in Room ${roomName}: ${numClients[roomName]}`);
+
         let message = "Left the room!"
         socket.to(roomName).emit('SERVER_MESSAGE',{user: data.user , message: message});
     });
