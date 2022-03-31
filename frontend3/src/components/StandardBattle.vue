@@ -9,8 +9,8 @@
         <button v-if="!joinedRoom" v-on:click="joinRoom()">Join Room</button>
         <button v-if="joinedRoom" v-on:click="leaveRoom()">Leave Room</button>
       </div>
-      <div class="card-body">
-        <div class="messages" v-for="(msg, index) in messages" :key="index">
+      <div class="card-body" id="messageContainer">
+        <div class="messages" v-for="(msg, index) in messages" :key="index" >
           <p><span class="font-weight-bold">{{ msg.user }}:</span>{{ msg.message }}</p>
           <hr>
         </div>
@@ -18,9 +18,9 @@
     </div>
     <div v-if="joinedRoom" class="card-footer">
         <div class="gorm-group pb-3" v-if="this.gameStarted">
-          <button type="submit" class="btn btn-success">Selection 1</button>
-          <button type="submit" class="btn btn-success">Selection 2</button>
-          <button type="submit" class="btn btn-success">Selection 3</button>
+          <button type="submit" class="btn btn-success" v-on:click="selectionOne">{{this.choices[0].choice}}</button>
+          <button type="submit" class="btn btn-success" v-on:click="selectionTwo">{{this.choices[1].choice}}</button>
+          <button type="submit" class="btn btn-success" v-on:click="selectionThree">{{this.choices[2].choice}} </button>
         </div>
         <div v-if="!gameStarted">
           <button type="submit" class="btn btn-success" v-on:click="startGame">Start Game</button>
@@ -53,7 +53,8 @@ export default {
       joinedRoom: false,
       message: "",
       messages: [],
-      gameStarted: false
+      gameStarted: false,
+      points: 0
     }
   },
 
@@ -69,6 +70,7 @@ export default {
       this.socket.emit('leaveRoom',{user: this.user.username});
       this.joinedRoom = false;
       this.messages = [];
+      this.gameStarted = false;
     },
     startGame(){
       if(this.joinedRoom == true){
@@ -77,23 +79,23 @@ export default {
     },
     selectionOne(){
       //TODO
+      if(this.choices[0].oldIndex ==0) this.points++;
+      this.socket.emit('MADE_SELECTION',{username: this.user.username, selection: this.choices[0].oldIndex})
     },
     selectionTwo(){
+      if(this.choices[1].oldIndex ==0) this.points++;
+      this.socket.emit('MADE_SELECTION',{username: this.user.username, selection: this.choices[1].oldIndex})
 
     },
     selectionThree(){
+      if(this.choices[2].oldIndex ==0) this.points++;
+      this.socket.emit('MADE_SELECTION',{username: this.user.username, selection: this.choices[2].oldIndex})
 
     },
-    sendMessage(e) {
-      e.preventDefault();
-
-      this.socket.emit('SEND_CHOICE', {selection: this.selection, user: this.user.username});
-      this.message = '';
-    }
-
 
   },
   mounted() {
+
     //this.socket.auth = JSON.parse(localStorage.getItem('user')).username;
     this.socket.on('SERVER_MESSAGE', (data) => {
       this.messages.push(data);
@@ -101,7 +103,8 @@ export default {
     this.socket.on('STARTED_GAME', (data) =>{
       if(data.started == true){
         this.gameStarted = true;
-        this.choices = data.question.choices;
+        data.question.choices.forEach((item, index) => { this.choices.push({oldIndex: index,choice: item})});
+        console.log(this.choices);
         this.question = data.question.question;
         this.messages.push({user: "Server", message: "Game has started!"});
         this.messages.push({user: "Server", message: this.question});
@@ -113,15 +116,29 @@ export default {
 
     });
     this.socket.on('NEW_QUESTION', (data) => {
+      this.choices = [];
       data.question.choices.forEach((item, index) => { this.choices.push({oldIndex: index,choice: item})});
 
       this.choices = this.choices.sort(() => Math.random() - 0.5) // Mischen
 
       this.messages.push({user: "Server", message: data.question.question})
     });
-    this.socket.on('SLECTION_RESULT', (message) => {
-      this.messages.push(message);
-    })
+    this.socket.on('SELECTION_RESULT', (message) => {
+      this.messages.push({user: 'Server', message: ' '+message.user + ' ' + message.message});
+    });
+    this.socket.on('GAME_ENDED', (data) =>{
+      this.gameStarted = false;
+
+      this.messages.push({user: "Server", message: data.message});
+
+      this.socket.emit('GAME_RESULT', {user: this.user.username, points: this.points});
+
+      this.points = 0;
+    });
+    this.socket.on('USER_RESULT', (data) => {
+
+      this.messages.push({user: 'Server', message: ' '+data.username+' '+ data.message});
+    });
   },
 
   beforeUnmount() {

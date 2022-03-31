@@ -96,26 +96,31 @@ io.of("/battle").on('connection', async (socket) => {
         }
     });
 
-    socket.on('nextQuestion', () => {
+    function nextQuestion(){
         selectedQuestion++;
 
         if(questions[selectedQuestion] != undefined){
             io.of("/battle").to(roomName).emit('NEW_QUESTION', {question: questions[selectedQuestion]});
         }else{
-            io.of("/battle").to(roomName).emit('GAME_ENDED', {message: "game ended"});
+            io.of("/battle").to(roomName).emit('GAME_ENDED', {message: "Game ended!"});
         }
-    });
+    }
+
+    socket.on('GAME_RESULT', (data) => {
+
+        io.of("/battle").to(roomName).emit('USER_RESULT', {username: data.user, message: ' hat ' + data.points + ' Punkte.'});
+    })
 
     socket.on('MADE_SELECTION', (data)=>{
         let username = data.username;
         let selection = data.selection;
-
+        console.log(username + " Selection " + selection);
         // Erstes element ist immer richtig
         if(selection == 0){
-            io.of("/battle").to(roomName).emit('SELECTION_RESULT', {user: username, message: "Hat es erraten. Richtig war " + questions[selectedQuestion].choices[0]});
-            io.of("/battle").to(roomName).emit('nextQuestion');
+            io.of("/battle").to(roomName).emit('SELECTION_RESULT', {user: username, message: "hat es erraten. Richtig war " + questions[selectedQuestion].choices[0]});
+            nextQuestion();
         }else{
-            io.of("/battle").to(roomName).emit('SELECTION_RESULT', {user: username, message: "Hat es leider nicht erraten :("});
+            io.of("/battle").to(roomName).emit('SELECTION_RESULT', {user: username, message: "hat es leider nicht erraten :("});
         }
 
     });
